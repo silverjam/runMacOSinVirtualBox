@@ -2,7 +2,7 @@
 #
 # DESCRIPTION
 #
-# Run macOS 10.14 Mojave in Virtualbox.
+# Run macOS 10.14 High Sierra in Virtualbox.
 #
 # CREDITS
 #
@@ -17,11 +17,11 @@ readonly SCRIPTPATH="$(
   cd "$(dirname "$0")" || exit
   pwd -P
 )"
-readonly INST_VERS="$(find /Applications -maxdepth 1 -type d -name 'Install macOS Mojave*' | wc -l | tr -d '[:space:]')"
-readonly INST_VER="$(find /Applications -maxdepth 1 -type d -name 'Install macOS Mojave*' -print -quit)"
+readonly INST_VERS="$(find /Applications -maxdepth 1 -type d -name 'Install macOS High Sierra*' | wc -l | tr -d '[:space:]')"
+readonly INST_VER="$(find /Applications -maxdepth 1 -type d -name 'Install macOS High Sierra*' -print -quit)"
 readonly INST_BIN="$INST_VER/Contents/Resources/createinstallmedia"
 readonly DST_DIR="${DST_DIR:-$HOME/VirtualBox VMs}"
-readonly VM_NAME="${VM_NAME:-macOS-Mojave}"
+readonly VM_NAME="${VM_NAME:-macOS-HighSierra}"
 readonly VM_DIR="${VM_DIR:-$DST_DIR/$VM_NAME}"
 readonly VM_SIZE="${VM_SIZE:-32768}"
 readonly VM_RES="${VM_RES:-1680x1050}"
@@ -38,7 +38,7 @@ readonly DST_SPARSE2="$DST_DIR/$VM_NAME.sparseimage"
 readonly FILE_EFI="/usr/standalone/i386/apfs.efi"
 readonly FILE_CFG="$SCRIPTPATH/config.plist"
 readonly FILE_EFIMOVER="$SCRIPTPATH/moveCloverToEFI.sh"
-readonly FILE_LOG="$HOME/Library/Logs/runMojaveVirtualbox.log"
+readonly FILE_LOG="$HOME/Library/Logs/runHighSierraVirtualbox.log"
 ###############################################################################
 
 # Logging #####################################################################
@@ -59,7 +59,7 @@ error() {
   log "$1"
   if [ -d "$SCRIPTPATH/ProgressDialog.app" ]; then
     osascript -e 'tell application "'"$SCRIPTPATH/ProgressDialog.app"'"' -e 'activate' \
-      -e 'set name of window 1 to "Installing macOS Mojave on Virtualbox"' \
+      -e 'set name of window 1 to "Installing macOS High Sierra on Virtualbox"' \
       -e 'set message of window 1 to "'"ERROR: $1"'."' \
       -e 'set percent of window 1 to (100)' \
       -e 'end tell'
@@ -71,7 +71,7 @@ info() {
   log "$1"
   if [ -d "$SCRIPTPATH/ProgressDialog.app" ]; then
     osascript -e 'tell application "'"$SCRIPTPATH/ProgressDialog.app"'"' -e 'activate' \
-      -e 'set name of window 1 to "Installing macOS Mojave on Virtualbox"' \
+      -e 'set name of window 1 to "Installing macOS High Sierra on Virtualbox"' \
       -e 'set message of window 1 to "'"$1"'...'"$2"'%."' \
       -e 'set percent of window 1 to ('"$2"')' \
       -e 'end tell'
@@ -215,7 +215,7 @@ createClover() {
       sleep 1
     done
     hdiutil attach Clover-v2.4k-4533-X64.iso
-    hdiutil create -megabytes 16 -fs MS-DOS -volname MojaveClover -o "$DST_CLOVER.dmg"
+    hdiutil create -megabytes 16 -fs MS-DOS -volname HighSierraClover -o "$DST_CLOVER.dmg"
     hdiutil attach "$DST_CLOVER.dmg"
     cp -r /Volumes/Clover-v2.4k-4533-X64/* /Volumes/NO\ NAME/
     cp "$FILE_CFG" /Volumes/NO\ NAME/EFI/CLOVER/
